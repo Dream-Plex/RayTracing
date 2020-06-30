@@ -17,7 +17,7 @@ int main()
 
     gear::render(canvas, sphere);
 
-    gear::save_canvas(canvas, "MyRayTracing.png");
+    gear::save_canvas(canvas, "MyRayTracing0.png");
 
     unsigned end_time = clock();
 
