@@ -1,3 +1,3 @@
 # My tiny ray casting
 ###### First out
-![alt text] (examples/1.png)
+![alt text](examples/1.png)
