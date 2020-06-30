@@ -1,3 +1,3 @@
 # My tiny ray casting
 ###### First out
-![alt text] (https://raw.githubusercontent.com/Dream-Plex/RayTracing/master/examples/1.png) 
+![alt text] (examples/1.png)
