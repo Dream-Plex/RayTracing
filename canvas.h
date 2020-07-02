@@ -25,7 +25,7 @@ private:
     const short unsigned channel_num = 3;
     const float rgb = 255.99;
 
-    friend void render (gear::Canvas &canvas, Sphere &sphere);
+    friend void render (gear::Canvas &canvas, std::vector<Sphere> &sphere);
     friend void save_canvas(Canvas &canvas, const char *name);
 
 public:
@@ -35,11 +35,13 @@ public:
     void operator <<(gear::Vec3f &pixel);
 };
 
-gear::Vec3f cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const Sphere &sphere);
+gear::Vec3f cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres);
+
+bool scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, float &dist, Material &material);
 
 void save_canvas(Canvas &canvas, const char *name);
 
-void render (gear::Canvas &canvas, Sphere &sphere);
+void render (gear::Canvas &canvas, std::vector<Sphere> &sphere);
 
 }
 #endif // CANVAS_H

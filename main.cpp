@@ -24,7 +24,7 @@ int main()
 
 //    Sphere sphere(gear::Vec3f(0, 10, -5), 10);
 
-    gear::render(canvas, spheres[1]); //Переделать метод
+    gear::render(canvas, spheres); //Переделать метод
 
     gear::save_canvas(canvas, "MyRayTracing0.png");
 

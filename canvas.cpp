@@ -31,7 +31,7 @@ void gear::save_canvas(gear::Canvas &canvas, const char* name)
     stbi_write_png(name, canvas.width, canvas.height, canvas.channel_num, canvas.pixels, stride);
 }
 
-void gear::render(gear::Canvas &canvas, Sphere &sphere)
+void gear::render(gear::Canvas &canvas, std::vector<Sphere> &spheres)
 {
     for (size_t j = canvas.height; j > 0; --j)
     {
@@ -42,17 +42,26 @@ void gear::render(gear::Canvas &canvas, Sphere &sphere)
             float y = -(2 * (j + 0.5)/(float)canvas.height - 1) * tan(canvas.fov/2.);
 
             auto dir = Vec3f(x, y, -1).normalize();
-            auto res = cast_ray(Vec3f (0, 0, 0), dir, sphere);
+            auto res = cast_ray(Vec3f (0, 0, 0), dir, spheres);
 
             canvas << res;
         }
     }
 }
 
-gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const Sphere &sphere)
+gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres)
 {
     float sphere_dist = std::numeric_limits<float>::max();
-    if (!sphere.ray_intersect(orig, dir, sphere_dist))
+    Material material;
+    if (!scene_intersect(orig, dir, spheres, sphere_dist, material))
         return gear::Vec3f (0.2, 0.7, 0.8);
-    return /*gear::Vec3f (0.4, 0.4, 0.3)*/ sphere.material.diffuse_color;
+    return /*gear::Vec3f (0.4, 0.4, 0.3)*/ material.diffuse_color;
+}
+
+bool gear::scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, float &dist, Material &material)
+{
+    for (const auto &sphere : spheres)
+        if (sphere.ray_intersect(orig, dir, dist))
+            material = sphere.material;
+    return dist < 1000;
 }
