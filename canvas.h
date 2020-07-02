@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <limits>
+#include <vector>
 
 #include "stb\stb_image_write.h"
 #include "stb\stb_image.h"

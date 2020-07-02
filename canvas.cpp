@@ -54,5 +54,5 @@ gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, cons
     float sphere_dist = std::numeric_limits<float>::max();
     if (!sphere.ray_intersect(orig, dir, sphere_dist))
         return gear::Vec3f (0.2, 0.7, 0.8);
-    return gear::Vec3f (0.4, 0.4, 0.3);
+    return /*gear::Vec3f (0.4, 0.4, 0.3)*/ sphere.material.diffuse_color;
 }
