@@ -9,27 +9,31 @@ int main()
     const unsigned width = 1920;
     const unsigned height = 1080;
 
+    gear::Canvas canvas(width, height);
+
     Timer t;
     t.Start();
 
+
     std::vector<Sphere> spheres;
 
+    std::vector<Light> lights;
+
     spheres.push_back(Sphere (gear::Vec3f(0, 10, -20), 10, Materials::crimson));
-    spheres.push_back(Sphere (gear::Vec3f(0, 0, -10), 2, Materials::aqua));
     spheres.push_back(Sphere (gear::Vec3f(-1, -4, -13), 1.5, Materials::orange_red));
     spheres.push_back(Sphere (gear::Vec3f(-11, -5, -17), 4, Materials::red_rubber));
     spheres.push_back(Sphere (gear::Vec3f(10, -5, -17), 3, Materials::ivory));
 
-    gear::Canvas canvas(width, height);
+    lights.push_back(Light (gear::Vec3f(-20, 20,  20), 1)); // Если поставить интенсивность светы > 1, то происходит переполнение цвета.
+    lights.push_back(Light (gear::Vec3f(0, 0,  -10), 1));
 
-//    Sphere sphere(gear::Vec3f(0, 10, -5), 10);
+    gear::render(canvas, spheres, lights);
 
-    gear::render(canvas, spheres); //Переделать метод
+    gear::save_canvas(canvas, "MyRayTracing.png");
 
-    gear::save_canvas(canvas, "MyRayTracing0.png");
-
-    std::cout << "rendering completed in ";
     t.Stop();
+
+    std::cout << "completed in " << t << std::endl;
 
     return 0;
 }

@@ -41,4 +41,14 @@ public:
     bool ray_intersect(const gear::Vec3f orig, const gear::Vec3f dir, float &t0) const;
 };
 
+class Light
+{
+public:
+    gear::Vec3f position;
+    float intensity;
+public:
+    Light(const gear::Vec3f &p, const float &i) : position(p), intensity(i){};
+
+};
+
 #endif // SPHERE_H

@@ -38,6 +38,15 @@ void gear::Vec3f::normalize(gear::Vec3f &target)
     target *= invLength;
 }
 
+gear::Vec3f gear::Vec3f::clipping_color()
+{
+    Vec3f temp(*this);
+    if (temp.x > 1) temp.x = 1;
+    if (temp.y > 1) temp.y = 1;
+    if (temp.z > 1) temp.z = 1;
+    return temp;
+}
+
 gear::Vec3f gear::Vec3f::operator *(const float &var) const
 {
     Vec3f temp(*this);
@@ -113,6 +122,16 @@ void gear::Vec3f::operator -=(const gear::Vec3f &other)
     this->x -= other.x;
     this->y -= other.y;
     this->z -= other.z;
+}
+
+bool gear::Vec3f::operator >(const gear::Vec3f &other) const
+{
+    return this->x > other.x && this->y > other.y && this->y > other.y;
+}
+
+bool gear::Vec3f::operator <(const gear::Vec3f &other) const
+{
+    return this->x < other.x && this->y < other.y && this->y < other.y;
 }
 
 void gear::Vec3f::operator =(const gear::Vec3f &other)

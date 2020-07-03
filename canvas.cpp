@@ -31,7 +31,7 @@ void gear::save_canvas(gear::Canvas &canvas, const char* name)
     stbi_write_png(name, canvas.width, canvas.height, canvas.channel_num, canvas.pixels, stride);
 }
 
-void gear::render(gear::Canvas &canvas, std::vector<Sphere> &spheres)
+void gear::render(gear::Canvas &canvas, std::vector<Sphere> &spheres, std::vector<Light> &lights)
 {
     for (size_t j = canvas.height; j > 0; --j)
     {
@@ -42,26 +42,47 @@ void gear::render(gear::Canvas &canvas, std::vector<Sphere> &spheres)
             float y = -(2 * (j + 0.5)/(float)canvas.height - 1) * tan(canvas.fov/2.);
 
             auto dir = Vec3f(x, y, -1).normalize();
-            auto res = cast_ray(Vec3f (0, 0, 0), dir, spheres);
+            auto res = cast_ray(Vec3f (0, 0, 0), dir, spheres, lights);
 
             canvas << res;
         }
     }
 }
 
-gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres)
+gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, std::vector<Light> &lights)
 {
-    float sphere_dist = std::numeric_limits<float>::max();
+    gear::Vec3f point, N;
+
     Material material;
-    if (!scene_intersect(orig, dir, spheres, sphere_dist, material))
+
+    if (!scene_intersect(orig, dir, spheres, point, N, material))
         return gear::Vec3f (0.2, 0.7, 0.8);
-    return /*gear::Vec3f (0.4, 0.4, 0.3)*/ material.diffuse_color;
+
+    // Написать код для рассчета света.
+    float diffuse_light_intensity = 0;
+    for (auto &light : lights)
+    {
+        gear::Vec3f light_dir = (light.position - point).normalize();
+        diffuse_light_intensity += light.intensity * std::max(0.f, N * light_dir);
+    }
+
+    return (material.diffuse_color * diffuse_light_intensity).clipping_color();
 }
 
-bool gear::scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, float &dist, Material &material)
+bool gear::scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, Vec3f &hit, Vec3f &N, Material &material)
 {
+    float sphere_dist = std::numeric_limits<float>::max();
     for (const auto &sphere : spheres)
-        if (sphere.ray_intersect(orig, dir, dist))
+    {
+        float dist_i;
+        if (sphere.ray_intersect(orig, dir, dist_i) && dist_i < sphere_dist)
+        {
+            sphere_dist = dist_i;
+            hit = orig + dir * dist_i;
+            N = (hit - sphere.center).normalize();
             material = sphere.material;
-    return dist < 1000;
+        }
+    }
+
+    return sphere_dist < 1000;
 }

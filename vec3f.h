@@ -22,6 +22,8 @@ public:
     Vec3f normalize();
     static void normalize(Vec3f &target);
 
+    Vec3f clipping_color();
+
     Vec3f operator *(const float &var) const;
     void operator *=(const float &var);
 
@@ -33,6 +35,9 @@ public:
 
     Vec3f operator -(const Vec3f &other) const;
     void operator -=(const Vec3f &other);
+
+    bool operator >(const Vec3f &other) const;
+    bool operator <(const Vec3f &other) const;
 
     void operator =(const Vec3f &other);
 
