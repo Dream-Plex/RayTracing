@@ -8,3 +8,5 @@
 ###### Lights
 ![alt text](examples/3.png)
 
+###### specular lighting
+![alt text](examples/4.png)

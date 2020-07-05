@@ -57,16 +57,20 @@ gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, cons
 
     if (!scene_intersect(orig, dir, spheres, point, N, material))
         return gear::Vec3f (0.2, 0.7, 0.8);
+//        return gear::Vec3f (0., 0., 0.);
 
     // Написать код для рассчета света.
-    float diffuse_light_intensity = 0;
+    float diffuse_light_intensity = 0, specular_light_intensity = 0;
     for (auto &light : lights)
     {
         gear::Vec3f light_dir = (light.position - point).normalize();
+
         diffuse_light_intensity += light.intensity * std::max(0.f, N * light_dir);
+        specular_light_intensity += powf(std::max(0.f, reflect(light_dir, N)*dir), material.specular_exponent) * light.intensity;
     }
 
-    return (material.diffuse_color * diffuse_light_intensity).clipping_color();
+    return (material.diffuse_color * diffuse_light_intensity * material.albedo.x + gear::Vec3f(1., 1., 1.) *
+            specular_light_intensity * material.albedo.y).clipping_color();
 }
 
 bool gear::scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, Vec3f &hit, Vec3f &N, Material &material)
@@ -85,4 +89,9 @@ bool gear::scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, cons
     }
 
     return sphere_dist < 1000;
+}
+
+gear::Vec3f gear::reflect(const gear::Vec3f &I, const gear::Vec3f &N)
+{
+    return I - N * 2.f * (I * N);
 }
