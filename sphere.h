@@ -24,17 +24,17 @@ public:
 
 namespace Materials
 {
-    const Material ivory (Vec2f(0.6,  0.3), gear::Vec3f(0.4, 0.4, 0.3), 50.);
+    const Material ivory      (Vec2f(0.6,  0.3), gear::Vec3f(0.4,  0.4,  0.3),  50.);
 
-    const Material red_rubber (Vec2f(0.9,  0.1), gear::Vec3f(0.3, 0.1, 0.1), 10.);
+    const Material red_rubber (Vec2f(0.9,  0.1), gear::Vec3f(0.3,  0.1,  0.1),  10.);
 
-    const Material aqua (Vec2f(0.6,  0.3), gear::Vec3f(0, 1, 1), 50.);
+    const Material aqua       (Vec2f(0.6,  0.3), gear::Vec3f(0,    1,    1),    50.);
 
-    const Material silver (Vec2f(0.6,  0.3), gear::Vec3f(0.75, 0.75, 0.75), 10.);
+    const Material silver     (Vec2f(0.6,  0.3), gear::Vec3f(0.75, 0.75, 0.75), 10.);
 
-    const Material crimson (Vec2f(0.6,  0.3), gear::Vec3f(0.86, 0.08, 0.24), 50.);
+    const Material crimson    (Vec2f(0.6,  0.3), gear::Vec3f(0.86, 0.08, 0.24), 50.);
 
-    const Material orange_red (Vec2f(0.6,  0.3), gear::Vec3f(1.f, 0.27, 0.f), 10.);
+    const Material orange_red (Vec2f(0.6,  0.3), gear::Vec3f(1.f,  0.27, 0.f),  10.);
 }
 
 class Sphere

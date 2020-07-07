@@ -59,14 +59,24 @@ gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, cons
         return gear::Vec3f (0.2, 0.7, 0.8);
 //        return gear::Vec3f (0., 0., 0.);
 
-    // Написать код для рассчета света.
     float diffuse_light_intensity = 0, specular_light_intensity = 0;
     for (auto &light : lights)
     {
         gear::Vec3f light_dir = (light.position - point).normalize();
+        float light_distance  = (light.position - point).length();
 
+        gear::Vec3f shadow_orig = light_dir * N < 0 ? point - N * 1e-3 : point + N * 1e-3;
+        gear::Vec3f shadow_pt, shadow_N;
+
+        Material temp_materail;
+
+        if (scene_intersect(shadow_orig, light_dir, spheres, shadow_pt, shadow_N, temp_materail) &&
+                (shadow_pt-shadow_orig).length() < light_distance)
+            continue;
         diffuse_light_intensity += light.intensity * std::max(0.f, N * light_dir);
         specular_light_intensity += powf(std::max(0.f, reflect(light_dir, N)*dir), material.specular_exponent) * light.intensity;
+
+
     }
 
     return (material.diffuse_color * diffuse_light_intensity * material.albedo.x + gear::Vec3f(1., 1., 1.) *
