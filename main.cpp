@@ -20,9 +20,9 @@ int main()
 
     spheres.push_back(Sphere(gear::Vec3f(  0,  10, -30),  10, Materials::crimson   ));
     spheres.push_back(Sphere(gear::Vec3f( -1,  -4, -13), 1.5, Materials::orange_red));
-    spheres.push_back(Sphere(gear::Vec3f(-11,  -5, -17),   4, Materials::red_rubber));
+    spheres.push_back(Sphere(gear::Vec3f(-11,  -5, -17),   4, Materials::mirror));
     spheres.push_back(Sphere(gear::Vec3f( 10,  -5, -17),   3, Materials::ivory     ));
-    spheres.push_back(Sphere(gear::Vec3f(  4,  -3, -20),   3, Materials::red_rubber     ));
+    spheres.push_back(Sphere(gear::Vec3f(  4,  -3, -20),   3, Materials::mirror));
 
     lights.push_back(Light(gear::Vec3f(-30, -30,  20), 1.5));
     lights.push_back(Light(gear::Vec3f(  0,   0, -10), 0.8));
