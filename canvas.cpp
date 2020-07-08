@@ -42,22 +42,26 @@ void gear::render(gear::Canvas &canvas, std::vector<Sphere> &spheres, std::vecto
             float y = -(2 * (j + 0.5)/(float)canvas.height - 1) * tan(canvas.fov/2.);
 
             auto dir = Vec3f(x, y, -1).normalize();
-            auto res = cast_ray(Vec3f (0, 0, 0), dir, spheres, lights);
+            auto res = cast_ray(Vec3f (0, 0, 0), dir, spheres, lights).clipping_color();
 
             canvas << res;
         }
     }
 }
 
-gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, std::vector<Light> &lights)
+gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, std::vector<Light> &lights, size_t depth)
 {
     gear::Vec3f point, N;
 
     Material material;
 
-    if (!scene_intersect(orig, dir, spheres, point, N, material))
+    if (depth > 100 || !scene_intersect(orig, dir, spheres, point, N, material))
         return gear::Vec3f (0.2, 0.7, 0.8);
 //        return gear::Vec3f (0., 0., 0.);
+
+    gear::Vec3f reflect_dir = reflect(dir, N).normalize();
+    gear::Vec3f reflect_orig = reflect_dir * N < 0 ? point - N*1e-3 : point + N*1e-3;
+    gear::Vec3f reflect_color = cast_ray(reflect_orig, reflect_dir, spheres, lights, ++depth);
 
     float diffuse_light_intensity = 0, specular_light_intensity = 0;
     for (auto &light : lights)
@@ -80,7 +84,7 @@ gear::Vec3f gear::cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, cons
     }
 
     return (material.diffuse_color * diffuse_light_intensity * material.albedo.x + gear::Vec3f(1., 1., 1.) *
-            specular_light_intensity * material.albedo.y).clipping_color();
+            specular_light_intensity * material.albedo.y) + reflect_color * material.albedo.z;
 }
 
 bool gear::scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, Vec3f &hit, Vec3f &N, Material &material)

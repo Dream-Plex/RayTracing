@@ -13,3 +13,6 @@
 
 ###### Shadows
 ![alt text](examples/5.png)
+
+###### Reflections
+![alt text](examples/6.png)

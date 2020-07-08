@@ -37,7 +37,7 @@ public:
 
 gear::Vec3f reflect(const gear::Vec3f &I, const gear::Vec3f &N);
 
-gear::Vec3f cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, std::vector<Light> &lights);
+gear::Vec3f cast_ray(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, std::vector<Light> &lights, size_t depth = 0);
 
 bool scene_intersect(const gear::Vec3f &orig, const gear::Vec3f &dir, const std::vector<Sphere> &spheres, Vec3f &hit, Vec3f &N, Material &material);
 
